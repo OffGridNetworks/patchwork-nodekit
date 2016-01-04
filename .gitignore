@@ -1,4 +1,10 @@
-dist/
+_offgrid/dist
+_offgrid/plugins
+_offgrid/api.md
+_offgrid/static
+_offgrid/public/fonts
+_offgrid/public/img
+ui/css/main.css
 node_modules/
 npm-debug.log
-ui/css/main.css
+.DS_Store

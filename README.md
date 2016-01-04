@@ -4,17 +4,66 @@
 
 Patchwork is a decentralized sharing app.
 It was built for friends of the SSB project, to test basic functions.
-We use it as a test-bed for features, and for our own daily messaging.
+They use it as a test-bed for features, and for their own daily messaging.
 
-Because SSB is a research project, **you'll need to contact an SSB team member (in #scuttlebutt on Freenode) to get onto the network!**
-That's our informal barrier to entry right now, since we're not prepared for lots of users yet.
+### FORK DETAILS 
 
-[![Hermies the Hermit Crab](https://avatars2.githubusercontent.com/u/10190339?v=3&s=200)](https://github.com/ssbc/scuttlebot)
+It is forked by OffGridNetworks as a reference app to run directly under Node.js and NodeKit for web and mobile devices,
+in addition to the base Electron version.  Patches include allowing multiple copies to run on the same localhost on seperate
+ports (for easier testing), elimination of all NPM packages that require compilation to Node bindings (for mass portability),
+removal of Electron API features that cannot be emulated in a browser (e.g., use an aysnchronous image loader instead of the 
+synchronous NativeImage API that is included in electron), use of in-memory version of LevelDB instead of the persistent version (for maximum portability), reduced UDP broadcasting on
+the local network (favoring pre-defined multi-cast addresses only for those nodes that opt in), and a few development shortcuts like using WebPack for hot reloading of the UI client.
 
-Patchwork embeds [Scuttlebot](https://github.com/ssbc/scuttlebot), so if you're running Patchwork, you don't need to run another scuttlebot server.
+This is not intended for production use but is a proof of concept to demonstrate that SSB can be used in a pure javascript environment
+and run on Javascript engines other than Blink/V8.  It works well on a WKWebView / UIWebView / Javascriptcore on iOS and OSX and 
+will soon be running under Android and Windows.   Instructions for incorporating in [Nodekit](http://nodekit.io) are available
+on request.
+
+Please note that this fork is not intended to create a server version of patchwork that runs in the cloud.  The whole idea
+of distributed apps is that they run completely distributed.  We keep a 1-1 relationship between client and server anyway, the 
+only reason we reconverted it to run under alternative Node engines is for embedded Node environments where a 40Mb Electron download is prohibitive 
+or even undistributable through AppStores (e.g., iOS).   We have tried to keep the original source untouched and operable in this fork
+to facilitate keeping in sync with the great work at ssbc/patchwork.
+
+### License
+
+The fork (largely the _offgrid directory and the updated package.json, .gitignore files and portions of README.md) is released under the [Apache 2 license](./LICENSE)
+
+Copyright © 2016 OffGrid Networks
+
+This product includes software developed at
+The Secure Scuttlebut Consortium. 
+
+Portions Copyright © 2015-2016 Secure Scuttlebutt Consortium
+
+This product includes software developed by Einar Otto Stangvik
+Copyright (c) 2011 Einar Otto Stangvik &lt;einaros@gmail.com&gt;
+See [WS](./_offgrid/server/lib/ws/README.md)
+
+## Install (Web / Mobile Version_)
+
+Install node v0.12 (you might like to use [nvm](https://github.com/creationix/nvm)).
+
+```bash
+git clone https://github.com/offgridnetworks/patchwork-nodekit.git
+cd patchwork-nodekit
+npm install
+npm run build:prod
+npm run build:server
+```
+
+## Run
+
+```bash
+# from the checkout directory
+npm start
+```
+
+Go to a browser and navigate to [http://localhost:3000](http://localhost:3000)
 
 
-## Install
+## Original Install (Electron Version_)
 
 Install node v5 (you might like to use [nvm](https://github.com/creationix/nvm)).
 
@@ -50,7 +99,7 @@ follow the on screen instructions to start a new identity
 and join a pub server.
 
 
-## Docs
+## Original Docs
 
 - [Building Patchwork](./docs/BUILDING.md)
 - [Creating a Testing Environment, and Running Tests](./docs/TESTING.md)
