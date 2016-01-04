@@ -10,7 +10,7 @@ var app
 
 function getApp() {
   if (!app)
-    app = require('../../../ui/lib/app')
+    app = require('./app')
   return app
 }
 

@@ -10,7 +10,7 @@
   "scripts": {
     "desktop": "electron .",
     "clean": "rimraf _offgrid/static && rimraf _offgrid/dist && rimraf _offgrid/public/fonts && rimraf _offgrid/public/img",
-    "copy": "mkdir -p _offgrid/plugins && cp ./node_modules/scuttlebot/api.md ./_offgrid && cp ./node_modules/scuttlebot/plugins/*.md ./_offgrid/plugins && mkdir -p _offgrid/dist && cp -r ./node_modules/mime/types ./_offgrid/dist/ && mkdir -p _offgrid/public && cp -r ./ui/fonts _offgrid/public && cp -r ./ui/img _offgrid/public && cp ./_offgrid/client/image-input.jsx ./ui/com/form-elements/",
+    "copy": "mkdir -p _offgrid/plugins && cp ./node_modules/scuttlebot/api.md ./_offgrid && cp ./node_modules/scuttlebot/plugins/*.md ./_offgrid/plugins && mkdir -p _offgrid/dist && cp -r ./node_modules/mime/types ./_offgrid/dist/ && mkdir -p _offgrid/public && cp -r ./ui/fonts _offgrid/public && cp -r ./ui/img _offgrid/public && cp ./_offgrid/client/image-input.jsx ./ui/com/form-elements/ && cp ./_offgrid/client/lib/muxrpc-ipc.js ./ui/lib && rm -rf ./node_modules/level",
     "prepublish": "npm run build:ui",
     "build:ui": "mkdir -p ./ui/css && lessc ./ui/less/main.less ./ui/css/main.css",
     "build:webpack": "NODE_ENV=production webpack --config _offgrid/webpack.config.prod.js",
@@ -46,6 +46,7 @@
     "expect": "^1.10.0",
     "jsdom": "^6.5.0",
     "json-loader": "^0.5.3",
+     "mime": "1.2.11",
     "mocha": "^2.3.2",
     "mocha-jsdom": "^1.0.0",
     "nock": "^2.18.2",

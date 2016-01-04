@@ -28,10 +28,14 @@ var require = function require(filepath) {
     var next = function() { return Module.prototype.require.next.apply(_this, arguments); };
 
     switch (filepath) {
-        case 'ipc':
-        {
+       case 'ipc':
                  return next(path.join(__dirname, 'ipcMain.js'));   
-        }  
+       case 'level':
+                 return next('level-mem');   
+       case 'native-image':
+               return next(path.join(__dirname, 'native-image.js'));    
+       case 'chloride':
+              return next(path.join(__dirname, 'chloride.js'));    
         default:
             // forward unrecognized modules to previous handler
             return next(filepath);

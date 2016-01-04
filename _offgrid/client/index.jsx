@@ -67,7 +67,7 @@ var socketIPC = ipc.init(window.socket, function(){
   
   window.ipc= socketIPC;
 
-    require('./lib/muxrpc-ipc').init(function(){ 
+    require('../../ui/lib/muxrpc-ipc').init(function(){ 
         // master state object
         window.app = require('../../ui/lib/app')
         // render

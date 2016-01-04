@@ -1,3 +1,5 @@
+//PATCHED TO USE ASYNC IPC INSTEAD OF SYNC
+
 var ipc        = require('ipc')
 var muxrpc     = require('muxrpc')
 var pull       = require('pull-stream')
@@ -85,21 +87,27 @@ var clientApi = {
   }
 }
 
-module.exports = function () {
-  // fetch manifest
-  var manifest = ipc.sendSync('fetch-manifest')
-  console.log('got manifest', manifest)
+var _ssb;
 
-  // create rpc object
-  var ssb = muxrpc(manifest, clientApiManifest, serialize)(clientApi)
-  function serialize (stream) { return stream }
+exports = module.exports = function () {
+   return _ssb;
+}
 
-  // setup rpc stream over ipc
-  var rpcStream = ssb.createStream()
-  var ipcStream = pullipc('ssb-muxrpc', ipc, function (err) {
-    console.log('ipc-stream ended', err)
-  })
-  pull(ipcStream, rpcStream, ipcStream)
+exports.init = function init(cb) {
+    // fetch manifest
+  
+    ipc.sendAsync('fetch-manifest', function (manifest) {
+        // create rpc object
+        var ssb = muxrpc(manifest, clientApiManifest, serialize)(clientApi)
+        function serialize(stream) { return stream }
 
-  return ssb
+        // setup rpc stream over ipc
+        var rpcStream = ssb.createStream()
+        var ipcStream = pullipc('ssb-muxrpc', ipc, function (err) {
+            console.log('ipc-stream ended', err)
+        })
+        pull(ipcStream, rpcStream, ipcStream)
+        _ssb = ssb;
+        cb();
+    });
 }

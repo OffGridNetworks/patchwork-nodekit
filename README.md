@@ -43,14 +43,23 @@ See [WS](./_offgrid/server/lib/ws/README.md)
 
 ## Install (Web / Mobile Version_)
 
-Install node v0.12 (you might like to use [nvm](https://github.com/creationix/nvm)).
+Install node v5.0 (you might like to use [nvm](https://github.com/creationix/nvm)).
 
 ```bash
 git clone https://github.com/offgridnetworks/patchwork-nodekit.git
 cd patchwork-nodekit
-npm install
+npm install --no-optional
 npm run build:prod
 npm run build:server
+```
+
+## Patch 1 line in _offgrid/dist/prodserver.js (for production only, not needed for development)
+
+```js
+CHANGE LINE 15
+/******/ 			id: moduleId,
+TO
+/******/ 			id: moduleId, parent: true,
 ```
 
 ## Run
@@ -58,6 +67,8 @@ npm run build:server
 ```bash
 # from the checkout directory
 npm start
+# or for hot module-reloading
+npm run dev
 ```
 
 Go to a browser and navigate to [http://localhost:3000](http://localhost:3000)

@@ -1,4 +1,21 @@
 'use babel'
+/*
+ * Copyright (c) 2016 OffGrid Networks
+ * Portions Copyright (c) 2015-2016 Secure Scuttlebutt Consortium
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from 'react'
 import NativeImage from 'native-image'
 import { createHash } from 'multiblob/util'
@@ -85,12 +102,21 @@ export default class ImageInput extends React.Component {
       const file = this.refs.fileInput.files[0]
       if (!file)
         return
-      const ni = NativeImage.createFromPath(file.path)
+        
+// ******** PATCH START 1 of 3
+//    const ni = NativeImage.createFromPath(file.path)
+      NativeImage.createFromPath(file, function(err, ni){
+// ******** PATCH END 1 of 3
+
       const dataUrl = ni.toDataUrl()
       if (dataUrl === 'data:image/png;base64,')
         return this.setState({ editorMsg: 'Failed to load image. Must be a valid PNG or JPEG.' })
+ 
+// ******** PATCH START 2 of 3
+//   const img = document.createElement('img')
+      const img = ni.toImg();
+// ******** PATCH END 2 of 3
 
-      const img = document.createElement('img')
       const imgdim = ni.getSize()
       const smallest = (imgdim.width < imgdim.height) ? imgdim.width : imgdim.height
       img.src = dataUrl
@@ -106,6 +132,9 @@ export default class ImageInput extends React.Component {
         minzoom: CANVAS_SIZE/smallest,
       })
       this.drawCanvas()
+// ******** PATCH START 3 of 3
+   }.bind(this));
+// ******** PATCH END 3 of 3
     }, 100)
   }
 
